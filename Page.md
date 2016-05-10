@@ -90,7 +90,7 @@ TLB可以满足大多数读页目录和页表的请求而无需使用总线周�
 线性地址中间10位用于索引二级页表，以获得物理地址的高20位。
 线性地址的低12位直接作为物理地址低12位，从而组成一个完整的32位物理地址。
 
-https://github.com/novelinux/arch-x86/res/blob/master/linetophysic.png
+https://github.com/novelinux/arch-x86/blob/master/res/linetophysic.png
 
 ### 不存在的页表
 
@@ -117,7 +117,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/linetophysic.png
 其中位31～12含有物理地址的高20位，用于定位物理地址空间中一个页面（也称为页帧）的物理基地址。
 表项的低12位含有页属性信息。前文已经讨论过存在属性，这里简要说明其余属性的功能和用途。
 
-https://github.com/novelinux/arch-x86/res/blob/master/page_table_item.png
+https://github.com/novelinux/arch-x86/blob/master/res/page_table_item.png
 
 * P: 位0是存在（Present）标志，用于指明表项对地址转换是否有效。P=1表示有效；P=0表示无效。
      在页转换过程中，如果说涉及的页目录或页表的表项无效，则会导致一个异常。

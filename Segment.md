@@ -8,7 +8,7 @@
 用于指定内存分段管理所用系统表的基地址，处理器为这些寄存器的加载和保存提供了特定的指令.
 如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/gdtr_idtr_tr_ldtr.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/gdtr_idtr_tr_ldtr.jpg
 
 ### 全局描述符表寄存器GDTR
 
@@ -57,7 +57,7 @@ TR寄存器: 用于存放当前任务TSS段的16位段选择符、32位基地址
 控制寄存器（CR0～CR3）用于控制和确定处理器的操作模式以及当前执行任务的特性.
 如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/cr.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/cr.jpg
 
 * CR0中含有控制处理器操作模式和状态的系统控制标志；
 * CR1保留不用；
@@ -145,7 +145,7 @@ CR2用于出现页异常时报告出错信息。在报告页异常时，处理�
 80x86在从逻辑地址到物理地址变换过程中使用了分段和分页两种机制.
 如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/address_convert.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/address_convert.jpg
 
 * 第一阶段使用分段机制把程序的逻辑地址变换成处理器可寻址内存空间（称为线性地址空间）中的地址。
 * 第二阶段使用分页机制把线性地址转换为物理地址。
@@ -161,7 +161,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/address_convert.jpg
 
 如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/segment.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/segment.jpg
 
 分段提供了一种机制，用于把处理器可寻址的线性地址空间划分成一些较小的称为段的受保护地址空间区域。
 段可以用来存放程序的代码、数据和堆栈，或者用来存放系统数据结构（如TSS或LDT）。如果处理器中有多个
@@ -212,7 +212,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/segment.jpg
 
 段描述符表是段描述符的一个数组，如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/gdt_ldt.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/gdt_ldt.jpg
 
 描述符表的长度可变，最多可以包含8192个8字节描述符。
 有两种描述符表：全局描述符表GDT(Global Descriptor Table)和局部描述符表LDT(Local Descriptor Table).
@@ -234,7 +234,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/gdt_ldt.jpg
 
 下图表明一个任务中的段如何能在GDT和LDT之间分开:
 
-https://github.com/novelinux/arch-x86/res/blob/master/example1.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/example1.jpg
 
 图中共有6个段，分别用于两个应用程序（A和B）以及操作系统。系统中每个应用程序对应一个任务，并且每个任务有自己的LDT。
 应用程序A在任务A中运行，拥有LDTA，用来映射段CodeA和DataA. 应用程序B在任务B中运行，使用LDTB来映射
@@ -269,7 +269,7 @@ LDT表存放在LDT类型的系统段中, 此时GDT必须含有LDT的段描述符
 
 段选择符（或称段选择子）是段的一个16位标识符，如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/selector.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/selector.jpg
 
 段选择符并不直接指向段，而是指向段描述符表中定义段的段描述符。段选择符的3个字段分别是：
 * 请求特权级RPL（Requested Privilege Level）;
@@ -285,7 +285,7 @@ TI=0表示描述符在GDT中；TI=1表示描述符在LDT中。索引字段给出
 
 如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/example2.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/example2.jpg
 
 * a中选择符（0x08）指定了GDT中具有RPL=0的段1，其索引字段值是1，TI位是0，指定GDT表。
 * b中选择符（0x10）指定了GDT中具有RPL=0的段2，其索引字段值是2，TI位是0，指定GDT表。
@@ -308,7 +308,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/example2.jpg
 把有效的段选择符加载到代码段（CS）、数据段（DS）和堆栈段（SS）寄存器中。处理器还另外提供3个辅助
 的数据段寄存器（ES、FS和GS），以便当前执行程序（或任务）能够访问其他几个数据段。
 
-https://github.com/novelinux/arch-x86/res/blob/master/seg_reg.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/seg_reg.jpg
 
 对于访问某个段的程序，必须已经把段选择符加载到一个段寄存器中。因此，尽管一个系统可以定义很多的段，
 但同时只有6个段可供立即访问。若要访问其他段就需要加载这些段的选择符。
@@ -340,7 +340,7 @@ MOV指令当然也可以用于把段寄存器可见部分内容存储到一个�
 即使利用段的最小功能，使用逻辑地址也能访问处理器地址空间中的每个字节。
 逻辑地址: 由16位的段选择符和32位的偏移量组成，如图所示：
 
-https://github.com/novelinux/arch-x86/res/blob/master/logic2linear.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/logic2linear.jpg
 
 段选择符指定字节所在的段，而偏移量指定该字节在段中相对于段基地址的位置。处理器会把每个逻辑地址
 转换成线性地址。线性地址是处理器线性地址空间中的32位地址。与物理地址空间类似，线性地址空间也是
@@ -364,7 +364,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/logic2linear.jpg
 
 下图给出了所有类型段描述符的一般格式:
 
-https://github.com/novelinux/arch-x86/res/blob/master/descriptor.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/descriptor.jpg
 
 一个段描述符中各字段和标志的含义如下：
 
@@ -381,7 +381,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/descriptor.jpg
 
 TYPE字段的编码对代码、数据或系统描述符都不同，如下图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/type.jpg
+https://github.com/novelinux/arch-x86/blob/master/res/type.jpg
 
 * 描述符类型标志S(Descriptor type flag): 用于指明一个段描述符是系统段描述符（当S=0）还是代码或数据段描述符（当S=1）。
 
@@ -424,7 +424,7 @@ CALL）时的栈指针大小。如果该标志置位，则使用32位栈指针�
 （Write-enable）和扩展方向E（Expansion-direction），参见下表中有关代码和数据段类型字段位的说明。
 根据可写位W的设置，一个数据段可以是只读的，也可以是可读可写的。
 
-https://github.com/novelinux/arch-x86/res/blob/master/code_data_type.png
+https://github.com/novelinux/arch-x86/blob/master/res/code_data_type.png
 
 堆栈段必须是可读/写的数据段。若使用不可写数据段的选择符加载到SS寄存器中，将导致一个一般保护异常。
 如果堆栈段的长度需要动态地改变，那么堆栈段可以是一个向下扩展的数据段（扩展方向标志置位）。这里，
@@ -467,4 +467,4 @@ https://github.com/novelinux/arch-x86/res/blob/master/code_data_type.png
 门描述符就是一个"门"，对于调用、中断或陷阱门，其中含有代码段的选择符和段中程序入口点的指针；
 对于任务门，其中含有TSS的段选择符。下表给出了系统段描述符和门描述符类型字段的编码。
 
-https://github.com/novelinux/arch-x86/res/blob/master/sys_descriptor_type.png
+https://github.com/novelinux/arch-x86/blob/master/res/sys_descriptor_type.png

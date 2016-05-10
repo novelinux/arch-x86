@@ -129,7 +129,7 @@ TYPE字段另外提供了4位用于定义代码、数据和系统描述符的各
 它会把当前运行程序或任务的CPL、段选择符的RPL和段描述符的DPL进行比较。
 只有当段的DPL数值大于或等于CPL和RPL两者时，处理器才会把选择符加载进段寄存器中；否则，就会产生一个一般保护异常，并且不加载段选择符。
 
-https://github.com/novelinux/arch-x86/res/blob/master/ds_check.png
+https://github.com/novelinux/arch-x86/blob/master/res/ds_check.png
 
 可知一个程序或任务可寻址的区域随着其CPL的改变而变化。
 当CPL是0时，此时所有特权级上的数据段都可被访问；
@@ -167,7 +167,7 @@ JMP、CALL和RET指令的近转移形式只是在当前代码段中执行程序�
 JMP、CALL或RET指令的远转移形式会把控制转移到另外一个代码段中，因此处理器一定会执行特权级检查。
 当不通过调用门把程序控制权转移到另一个代码段时，处理器会验证4种特权级和类型信息，如下图所示：
 
-https://github.com/novelinux/arch-x86/res/blob/master/cs_check.png
+https://github.com/novelinux/arch-x86/blob/master/res/cs_check.png
 
 当前特权级CPL（这里，CPL是执行调用的代码段的特权级，即含有执行调用或跳转程序的代码段的CPL）。
 * 含有被调用过程的目的代码段段描述符中的描述符特权级DPL。
@@ -204,7 +204,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/cs_check.png
 下图给出了调用门描述符的格式。调用门描述符可以存放在GDT或LDT中，但是不能放在中断描述符表IDT中。
 一个调用门主要具有以下功能：
 
-https://github.com/novelinux/arch-x86/res/blob/master/call_gate.png
+https://github.com/novelinux/arch-x86/blob/master/res/call_gate.png
 
 * 指定要访问的代码段。
 * 在指定代码段中定义过程（程序）的一个入口点。
@@ -222,14 +222,14 @@ Linux内核中并没有用到调用门。
 为了访问调用门，我们需要为CALL或JMP指令的操作数提供一个远指针。该指针中的段选择符用于指定调用门，
 而指针的偏移值虽然需要但CPU并不会用它。该偏移值可以设置为任意值，如图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/far_jmp.png
+https://github.com/novelinux/arch-x86/blob/master/res/far_jmp.png
 
 当处理器访问调用门时，它会使用调用门中的段选择符来定位目的代码段的段描述符。
 然后CPU会把代码段描述符的基地址与调用门中的偏移值进行组合，形成代码段中指定程序入口点的线性地址。
 通过调用门进行程序控制转移时，CPU会对当前特权级CPL、调用门选择符中的请求特权级RPL、
 调用门描述符中的描述符特权级DPL和目的代码段描述符中的DPL四种不同的特权级进行检查，以确定控制转移的有效性，如图所示:
 
-https://github.com/novelinux/arch-x86/res/blob/master/call_gate_check.png
+https://github.com/novelinux/arch-x86/blob/master/res/call_gate_check.png
 
 另外，目的代码段描述符中的一致性标志C也将受到检查。
 
@@ -238,7 +238,7 @@ CALL指令和JMP指令具有不同的特权级检测规则，见下表:
 调用者程序的特权级CPL必须小于或等于调用门的DPL。调用门段选择符的RPL也要同调用CPL一样遵守相同的规则，
 即RPL也必须小于或等于调用门的DPL。
 
-https://github.com/novelinux/arch-x86/res/blob/master/call_jmp.png
+https://github.com/novelinux/arch-x86/blob/master/res/call_jmp.png
 
 如果调用者与调用门之间的特权级检查成功通过，CPU就会接着把调用者的CPL与代码段描述符的DPL进行比较检查。
 在这方面，CALL指令和JMP指令的检查规则就不同了。只有CALL指令可以通过调用门把程序控制转移到特权级更高的
@@ -273,7 +273,7 @@ DPL等于CPL的非一致性代码段中。但CALL指令和JMP指令都可以把�
 
 当通过调用门执行一个过程调用而造成特权级改变时，CPU就会执行以下步骤切换堆栈并开始在新的特权级上执行被调用过程如下图所示：
 
-https://github.com/novelinux/arch-x86/res/blob/master/stack_switch.png
+https://github.com/novelinux/arch-x86/blob/master/res/stack_switch.png
 
 * 使用目的代码段的DPL（即新的CPL）从TSS中选择新栈的指针。从当前TSS中读取新栈的段选择符和栈指针。
   在读取栈段选择符、栈指针或栈段描述符过程中，任何违反段界限的错误都将导致产生一个无效TSS异常。
@@ -313,7 +313,7 @@ CPU会使用CS寄存器中选择符的RPL字段来确定是否要求返回到低
 访问用户级的页面，也可以访问超级用户级的页面。与分段机制不同的是，在内层超级用户级执行的程序对任何页面都具有
 可读/可写/可执行权限，包括那些在用户级标注为只读/可执行的页面。
 
-https://github.com/novelinux/arch-x86/res/blob/master/page_protection.png
+https://github.com/novelinux/arch-x86/blob/master/res/page_protection.png
 
 正如在整个80x86地址转换机制中分页机制是在分段机制之后实施一样，页级保护也是在分段机制提供的保护措施之后发挥作用。
 首先，所有段级保护被检查和测试。如果通过检查，就会再进行页级保护检查。
@@ -326,7 +326,7 @@ https://github.com/novelinux/arch-x86/res/blob/master/page_protection.png
 页表表项中的U/S标志和R/W标志应用于该表项映射的单个页面。页目录项中的U/S和R/W标志则对该目录项所映射的所有页面起作用。
 页目录和页表的组合保护属性由两者属性的"与"（AND）操作构成，因此保护措施非常严格。
 
-https://github.com/novelinux/arch-x86/res/blob/master/page_dir_table_protection.png
+https://github.com/novelinux/arch-x86/blob/master/res/page_dir_table_protection.png
 
 提供一些有关操作系统软件修改页表项内容所需遵守的规则。分页转换缓冲要求所有系统必须遵守这些规则。
 为了避免每次内存应用都要访问驻留内存的页表，从而加快速度，最近使用的线性到物理地址的转换信息被
